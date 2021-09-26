@@ -1,0 +1,12 @@
+var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+imagery.addTo(map);
+
+var OSM = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+OSM.addTo(map);
+
+var basemap = {
+	'Imagery' : imagery,
+	'Open Street Map' : OSM
+}
+
+L.control.layers(basemap, ).addTo(map);
