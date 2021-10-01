@@ -35,8 +35,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 
 	<link rel="stylesheet" href="dist/L.Icon.Pulse.css" />
-	<script src="dist/L.Icon.Pulse.js"></script>		
+	<script src="dist/L.Icon.Pulse.js"></script>
 
+	<link rel="stylesheet" href="plugin/leaflet.locationlist-master/src/leaflet.locationlist.css" />
+	<script src="plugin/leaflet.locationlist-master/src/leaflet.locationlist.js"></script>
 
 </head>
 <body>
@@ -62,6 +64,15 @@ function onEachFeature(feature, layer) {
     </table>';
 	layer.bindPopup(popupContent);
 }
+var llist = L.control.locationlist({ showList: true, nextTitle: "Go Forward!"});
+			map.addControl(llist);
+llist.on('next', function() { console.log("Switched to next!");});
+			llist.on('prev', function() { console.log("Switched to prev!");});
+
+var group = {
+	wisatadampit: new L.LayerGroup(),
+
+};
 
 var wisata = L.geoJson(LokasiWisata,{
 	onEachFeature: onEachFeature
@@ -80,8 +91,7 @@ marker1.bindPopup(
 	"<center><b>Wisata Pemandian Umbulan<br>Ds. Umbulrejo Ubalan, Pamotan, Dampit, Kabupaten Malang.</b></center><br>Data Pengunjung Tanggal 25 September 2021<br>- Kapasitas Pengunjung <b>1000</b><br>- Jumlah Pengunjung <b>748/1000</b>"
 );
 
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}').addTo(map);
-
+var group = L.layerGroup([marker1, marker]);
 
 L.control.defaultExtent().addTo(map);
 
@@ -102,7 +112,7 @@ var basemap = {
 	'Open Street Map' : OSM
 }
 
-L.control.layers(basemap, {' <img src="legend/red.png" />  Pemandian Umbulan':marker1, '<img src="legend/LokasiWisata_1.png" /> Lokasi Wisata Lainnya': wisata}).addTo(map);
+L.control.layers(basemap, {' <img src="legend/red.png" />  Pemandian Umbulan':group, '<img src="legend/LokasiWisata_1.png" /> Lokasi Wisata Lainnya': wisata}).addTo(map);
 </script>
 
 </body>
